@@ -18,10 +18,10 @@ const Navbar = () => {
   };
   return (
     <>
-    <nav style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: '1200px', margin: '0 auto'}}>
+    <nav className="container mx-auto flex items-center justify-between py-3 px-6">
       {/*Left -Logo*/}
       <div>
-        <Link to="/" style={{fontSize: '24px', fontWeight: '500', textDecoration: 'none', color: 'black'}}>
+        <Link to="/" className="text-2xl font-medium text-black">
           T Hub 
         </Link>
       </div>
