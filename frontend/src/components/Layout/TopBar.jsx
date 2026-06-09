@@ -1,13 +1,12 @@
-import React from 'react'
 import { TbBrandMeta } from 'react-icons/tb'
 import { IoLogoInstagram } from 'react-icons/io'
 import { RiTwitterXLine } from 'react-icons/ri'
 
 const TopBar = () => {
   return (
-    <div style={{backgroundColor: '#ea2e0e', color: 'white'}}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 24px', maxWidth: '1200px', margin: '0 auto'}}>
-        <div style={{display: 'flex', alignItems: 'center'}}>
+    <div className="bg-[#ea2e0e] text-white">
+      <div className="flex justify-between items-center px-6 py-3 max-w-[1200px] mx-auto">
+        <div className="hidden md:flex justify-center">
             <a href="#" style={{color: 'white'}}>
                 <TbBrandMeta style={{height: '20px', width: '20px'}}/>
             </a> 
@@ -18,10 +17,10 @@ const TopBar = () => {
                 <RiTwitterXLine style={{height: '16px', width: '16px'}}/>
             </a> 
         </div>
-        <div style={{fontSize: '14px', textAlign: 'center'}}>
+        <div className="text-center flex-1 text-sm">
             <span>We ship Worldwide - Fast and Reliable Shipping!</span>
         </div>
-        <div style={{fontSize: '14px'}}>
+        <div className="hidden md:block text-sm">
             <a href="tel:+254711527211" style={{color: 'white'}}>
                 +254711527211
             </a>
