@@ -41,7 +41,7 @@ const Navbar = () => {
       </div>
       {/*Right-Icons & Search & Hamburger */}
       <div className="flex items-center space-x-4">
-        <Link to="/profile" style={{color: '#374151', textDecoration: 'none', marginRight: '16px'}}>
+        <Link to="/login" style={{color: '#374151', textDecoration: 'none', marginRight: '16px'}}>
           <HiOutlineUser className="h-6 w-6 text-gray-700"/>
         </Link>
         <button 
