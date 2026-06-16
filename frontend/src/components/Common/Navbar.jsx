@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import CartDrawer from '../Layout/CartDrawer';
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
+
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
@@ -26,7 +27,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="hidden md:flex">
-        <Link to="#" style={{color: '#374151', textDecoration: 'none', fontSize: '14px', fontWeight: '500', textTransform: 'uppercase', marginRight: '24px'}}>
+        <Link to="collections/all" style={{color: '#374151', textDecoration: 'none', fontSize: '14px', fontWeight: '500', textTransform: 'uppercase', marginRight: '24px'}}>
         Men
         </Link>
         <Link to="#" style={{color: '#374151', textDecoration: 'none', fontSize: '14px', fontWeight: '500', textTransform: 'uppercase', marginRight: '24px'}}>
