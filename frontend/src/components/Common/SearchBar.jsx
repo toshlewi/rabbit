@@ -1,4 +1,3 @@
-import React from 'react'
 import {useState} from "react"
 import { HiMagnifyingGlass, HiMiniXMark } from 'react-icons/hi2'
 

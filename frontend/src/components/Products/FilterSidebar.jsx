@@ -74,7 +74,7 @@ const updateURLParams = (newFilters) => {
     }
   });
   setSearchParams(params);
-  navigate(`?${params.toString()}`);
+  navigate(`?${params.toString()}`); 
 }
 
 const handlePriceChange = (e) => {
