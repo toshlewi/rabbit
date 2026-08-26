@@ -1,0 +1,99 @@
+# ==========================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ==========================================
+
+.env
+.env.*
+!.env.example
+*.local
+
+# ==========================================
+# NODE / NPM
+# ==========================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==========================================
+# FRONTEND - REACT / VITE
+# ==========================================
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# If your frontend folder has a different name,
+# add it here, e.g. client/, web/, etc.
+
+# ==========================================
+# BACKEND - NODE / EXPRESS
+# ==========================================
+
+backend/node_modules/
+backend/dist/
+backend/uploads/
+backend/.env
+
+# ==========================================
+# BUILD / CACHE
+# ==========================================
+
+dist/
+dist-ssr/
+build/
+.cache/
+.parcel-cache/
+.vite/
+
+# ==========================================
+# TEST / COVERAGE
+# ==========================================
+
+coverage/
+.nyc_output/
+
+# ==========================================
+# LOGS
+# ==========================================
+
+logs/
+*.log
+
+# ==========================================
+# EDITORS
+# ==========================================
+
+.vscode/*
+!.vscode/extensions.json
+
+.idea/
+*.swp
+*.swo
+*.swn
+
+# ==========================================
+# OPERATING SYSTEM
+# ==========================================
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# TEMPORARY FILES
+# ==========================================
+
+*.tmp
+*.temp
+*.bak
+*.old
+
+# ==========================================
+# OPTIONAL: GENERATED FILES
+# ==========================================
+
+*.local
