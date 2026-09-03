@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true,
             trim: true,
-            match: [/.+@.+\..+/, "Please enter a valid email address"],
+            match: [/.+\@.+\..+/, "Please enter a valid email address"],
         },
 
         password: {
@@ -33,12 +33,14 @@ const userSchema = new mongoose.Schema(
 );
 
 // Password Hash middleware
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) {
+        return;
+    }
 
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
 
+    this.password = await bcrypt.hash(this.password, salt);
 });
 
 // Match entered password to hashed password
