@@ -154,7 +154,9 @@ router.get("/", async (req, res) => {
     const {guestId, userId} = req.query;
     try {
         const cart = await getCart(userId, guestId);
-        if (!cart) return res.status(404).json({message: "Cart not found"});
+        if (!cart) {
+            return res.status(200).json({ products: [], totalPrice: 0 });
+        }
         return res.status(200).json(cart);
     } catch (error) {
         console.error(error);

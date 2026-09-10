@@ -110,10 +110,17 @@ export const fetchCart = createAsyncThunk(
                 guestId,
             };
         } catch (error) {
-            console.error(
-                "Fetch cart error:",
-                error
-            );
+            if (
+                error.response?.status === 404 ||
+                error.response?.data?.message ===
+                    "Cart not found"
+            ) {
+                return {
+                    cart: emptyCart,
+                    userId,
+                    guestId,
+                };
+            }
 
             return rejectWithValue({
                 message:
