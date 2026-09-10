@@ -35,6 +35,9 @@ router.post("/", async (req, res) => {
             p.color === color);
         
 
+        const productImage =
+            product.images?.[0]?.url || product.image || "";
+
         //if product exists in cart, update its quantity, otherwise add it to the cart
         if (productIndex > -1) {
             cart.products[productIndex].quantity += quantity;
@@ -42,7 +45,7 @@ router.post("/", async (req, res) => {
             cart.products.push({
                 productId: product._id,
                 name: product.name,
-                image: product.image,
+                image: productImage,
                 price: product.price,
                 size,
                 color,
@@ -57,13 +60,16 @@ router.post("/", async (req, res) => {
 
         } else {
             //if cart does not exist, create a new one
+            const productImage =
+                product.images?.[0]?.url || product.image || "";
+
             const newCart = await Cart.create({
                 user: userId ? userId : undefined,
                 guestId: guestId ? guestId : "guest_" + new Date().getTime(),
                 products: [{
                     productId,
                     name: product.name,
-                    image: product.images[0].url,
+                    image: productImage,
                     price: product.price,
                     size,
                     color,
@@ -210,12 +216,32 @@ router.post("/merge", protect, async (req, res) => {
             if (userCart) {
                 res.status(200).json(userCart);
             } else {
-                res.status(404).json({message: "guest cart not found"});
+                res.status(200).json({ products: [], totalPrice: 0 });
             }
         }
     } catch (error) {
         console.error(error);
         return res.status(500).json({message: "Server error"});
+    }
+});
+
+// @route DELETE /api/cart/clear
+// @desc Clear cart for user or guest
+// @access Public
+router.delete("/clear", async (req, res) => {
+    const { guestId, userId } = req.body;
+
+    try {
+        const cart = await getCart(userId, guestId);
+
+        if (cart) {
+            await cart.deleteOne();
+        }
+
+        return res.status(200).json({ products: [], totalPrice: 0 });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server error" });
     }
 });
 

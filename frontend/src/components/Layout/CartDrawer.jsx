@@ -1,13 +1,32 @@
 import { IoMdClose } from 'react-icons/io'
 import CartContents from '../Cart/CartContents'
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { toast } from 'sonner';
 
 const CartDrawer = ({drawerOpen, toggleCartDrawer}) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+
   const handleCheckout = () => {
+    const cartItems = cart?.products || [];
+
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
     toggleCartDrawer();
+
+    if (!user) {
+      navigate("/login?redirect=checkout");
+      return;
+    }
+
     navigate('/checkout');
   };
+
   return (
   <div className={`fixed top-0 right-0 w-3/4 sm:w-1/2 md:w-[25rem] h-full bg-white shadow-lg transform transition-transform duration-300 flex flex-col z-50 ${drawerOpen ? "translate-x-0" : "translate-x-full" 
   }`}>

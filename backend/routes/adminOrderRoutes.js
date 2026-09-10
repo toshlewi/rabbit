@@ -28,8 +28,10 @@ router.put('/:id', protect, admin, async (req, res) => {
 
         if (order) {
             order.status = req.body.status || order.status;
-            order.isDelivered = req.body.isDelivered === "Delivered" ? true : order.isDelivered;
-            order.deliveredAt = req.body.isDelivered === "Delivered" ? Date.now() : order.deliveredAt;
+            if (req.body.status === "Delivered" || req.body.isDelivered === "Delivered") {
+                order.isDelivered = true;
+                order.deliveredAt = Date.now();
+            }
 
             const updatedOrder = await order.save();
             res.json(updatedOrder);

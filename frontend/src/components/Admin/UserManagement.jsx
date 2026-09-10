@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, deleteUser, fetchUsers, updateUser } from "../../redux/slices/adminSlice";
 
 const UserManagement = () => {
-    const users = [
-        {
-            id: 1,
-            name: "John Doe",
-            email: "john.doe@example.com",
-            role: "Admin"
-        }
-    ]
+    const dispatch = useDispatch();
+    const { users, loading, error } = useSelector((state) => state.admin);
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
-        role: "customer", // Default role
+        role: "customer",
     });
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, [dispatch]);
 
     const handleChange = (e) => {
         setFormData({
@@ -26,8 +26,7 @@ const UserManagement = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
-        // Reset form after submission
+        dispatch(addUser(formData));
         setFormData({
             name: "",
             email: "",
@@ -37,19 +36,27 @@ const UserManagement = () => {
     }
 
     const handleRoleChange = (userId, newRole) => {
-        console.log(`User ID: ${userId}, New Role: ${newRole}`);
-        // Here you would typically make an API call to update the user's role in the backend.
+        const user = users.find((item) => item._id === userId);
+
+        dispatch(updateUser({
+            id: userId,
+            name: user?.name,
+            email: user?.email,
+            role: newRole,
+        }));
     }
 
     const handleDeleteUser = (userId) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
-            console.log(`User ID: ${userId} deleted`);
-            // Here you would typically make an API call to delete the user in the backend.
+            dispatch(deleteUser(userId));
         }
     }
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4 ">User Management</h2>
+      {loading && <p>Loading users...</p>}
+      {error && <p className="text-red-500">{error}</p>}
       {/* Add New user form */}
       <div className="p-6 rounded-lg mb-6">
         <h3 className="text-lg font-semibold mb-4 ">Add New User</h3>
@@ -132,14 +139,14 @@ const UserManagement = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
-                        <tr key={user.id} className="border-b hover:bg-gray-50">
+                    {(users || []).map((user) => (
+                        <tr key={user._id} className="border-b hover:bg-gray-50">
                             <td className="p-4 font-medium text-gray-900 whitespace-nowrap">{user.name}</td>
                             <td className="py-2 px-4">{user.email}</td>
                             <td className="py-2 px-4">
                                 <select 
                                 value={user.role}
-                                onChange={(e) => {handleRoleChange(user.id, e.target.value)}}
+                                onChange={(e) => {handleRoleChange(user._id, e.target.value)}}
                                 className="p-2 border rounded"
                                 >
                                     <option value="customer">Customer</option>
@@ -148,7 +155,7 @@ const UserManagement = () => {
                             </td>
                             <td className="p-4">
                                 <button
-                                    onClick={() => handleDeleteUser(user.id)}
+                                    onClick={() => handleDeleteUser(user._id)}
                                     className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
                                 >
                                     Delete

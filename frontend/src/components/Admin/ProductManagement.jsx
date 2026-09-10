@@ -1,25 +1,33 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProduct, fetchAdminProducts } from "../../redux/slices/adminProductSlice";
 
 const ProductManagement = () => {
-    const products = [
-        {
-            _id: 123,
-            name: "Shirt",
-            price: 100,
-            sku: 123123123,
-        },
-    ];
+    const dispatch = useDispatch();
+    const { products, loading, error } = useSelector((state) => state.adminProducts);
+
+    useEffect(() => {
+        dispatch(fetchAdminProducts());
+    }, [dispatch]);
 
     const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this product?")) {
-            console.log(`Product ID: ${id} deleted`);
-            // Here you would typically make an API call to delete the product in the backend.
+            dispatch(deleteProduct(id));
         }
     };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4 ">Product Management</h2>
+      <Link
+        to="/admin/products/new"
+        className="inline-block bg-green-500 text-white py-2 px-4 rounded mb-4 hover:bg-green-600"
+      >
+        Add Product
+      </Link>
+      {loading && <p>Loading products...</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <div className="overflow-x-auto shadow-md sm:rounded-lg">
         <table className="min-w-full">
           <thead className="bg-gray-100 text-xs uppercase text-gray-700">

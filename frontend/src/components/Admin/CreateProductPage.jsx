@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { fetchProductDetails } from '../../redux/slices/productsSlice';
-import { updateProduct } from '../../redux/slices/adminProductSlice';
+import { toast } from 'sonner';
+import { createProduct } from '../../redux/slices/adminProductSlice';
 
-const EditProductPage = () => {
+const CreateProductPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams();
-    const { selectedProduct, detailsLoading, error } = useSelector((state) => state.products);
 
     const [productData, setProductData] = useState({
         name: '',
@@ -28,32 +26,7 @@ const EditProductPage = () => {
     });
 
     const [uploading, setUploading] = useState(false);
-
-    useEffect(() => {
-        if (id) {
-            dispatch(fetchProductDetails(id));
-        }
-    }, [dispatch, id]);
-
-    useEffect(() => {
-        if (selectedProduct) {
-            setProductData({
-                name: selectedProduct.name || '',
-                description: selectedProduct.description || '',
-                price: selectedProduct.price || 0,
-                countInStock: selectedProduct.countInStock || 0,
-                sku: selectedProduct.sku || '',
-                category: selectedProduct.category || '',
-                brand: selectedProduct.brand || '',
-                sizes: selectedProduct.sizes || [],
-                colors: selectedProduct.colors || [],
-                collections: selectedProduct.collections || '',
-                material: selectedProduct.material || '',
-                gender: selectedProduct.gender || '',
-                images: selectedProduct.images || [],
-            });
-        }
-    }, [selectedProduct]);
+    const [saving, setSaving] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -90,6 +63,7 @@ const EditProductPage = () => {
                 ],
             }));
         } catch (uploadError) {
+            toast.error("Image upload failed");
             console.error(uploadError);
         } finally {
             setUploading(false);
@@ -98,36 +72,31 @@ const EditProductPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSaving(true);
+
         try {
-            await dispatch(updateProduct({ id, productData })).unwrap();
+            await dispatch(createProduct({
+                ...productData,
+                isPublished: true,
+            })).unwrap();
+            toast.success("Product created");
             navigate("/admin/products");
         } catch (submitError) {
-            console.error(submitError);
+            toast.error(submitError?.message || "Failed to create product");
+        } finally {
+            setSaving(false);
         }
-    }
-
-    if (detailsLoading) {
-        return <p>Loading product...</p>;
-    }
-
-    if (error && !selectedProduct) {
-        return <p className="text-red-500">Error: {error}</p>;
-    }
+    };
 
     return (
         <div className="max-w-5xl mx-auto p-6 shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-6">
-                Edit Product
+                Create Product
             </h2>
 
             <form onSubmit={handleSubmit}>
-
-                {/* Product Name */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Product Name
-                    </label>
-
+                    <label className="block font-semibold mb-2">Product Name</label>
                     <input
                         type="text"
                         name="name"
@@ -138,12 +107,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Description */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Product Description
-                    </label>
-
+                    <label className="block font-semibold mb-2">Product Description</label>
                     <textarea
                         name="description"
                         value={productData.description}
@@ -154,12 +119,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Price */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Price
-                    </label>
-
+                    <label className="block font-semibold mb-2">Price</label>
                     <input
                         type="number"
                         name="price"
@@ -176,12 +137,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Count In Stock */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Count In Stock
-                    </label>
-
+                    <label className="block font-semibold mb-2">Count In Stock</label>
                     <input
                         type="number"
                         name="countInStock"
@@ -198,12 +155,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* SKU */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        SKU
-                    </label>
-
+                    <label className="block font-semibold mb-2">SKU</label>
                     <input
                         type="text"
                         name="sku"
@@ -214,12 +167,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Category */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Category
-                    </label>
-
+                    <label className="block font-semibold mb-2">Category</label>
                     <input
                         type="text"
                         name="category"
@@ -230,12 +179,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Collections */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Collections
-                    </label>
-
+                    <label className="block font-semibold mb-2">Collections</label>
                     <input
                         type="text"
                         name="collections"
@@ -246,12 +191,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Gender */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Gender
-                    </label>
-
+                    <label className="block font-semibold mb-2">Gender</label>
                     <select
                         name="gender"
                         value={productData.gender}
@@ -265,12 +206,8 @@ const EditProductPage = () => {
                     </select>
                 </div>
 
-                {/* Brand */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Brand
-                    </label>
-
+                    <label className="block font-semibold mb-2">Brand</label>
                     <input
                         type="text"
                         name="brand"
@@ -280,12 +217,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Material */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Material
-                    </label>
-
+                    <label className="block font-semibold mb-2">Material</label>
                     <input
                         type="text"
                         name="material"
@@ -295,12 +228,8 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Sizes */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Sizes (comma-separated)
-                    </label>
-
+                    <label className="block font-semibold mb-2">Sizes (comma-separated)</label>
                     <input
                         type="text"
                         name="sizes"
@@ -311,47 +240,40 @@ const EditProductPage = () => {
                     />
                 </div>
 
-                {/* Colors */}
                 <div className="mb-6">
-                    <label className="block font-semibold mb-2">
-                        Colors (comma-separated)
-                    </label>
-
+                    <label className="block font-semibold mb-2">Colors (comma-separated)</label>
                     <input
                         type="text"
                         name="colors"
-                        value={(productData.colors || []).join(', ')}
+                        value={productData.colors.join(', ')}
                         onChange={(e) => setProductData({ ...productData, colors: e.target.value.split(',').map((color) => color.trim()).filter(Boolean) })}
                         placeholder="Black, White, Red"
                         className="w-full border border-gray-300 rounded-md p-2"
                     />
                 </div>
 
-                {/* Images */}
-                <div className=" mb-6">
+                <div className="mb-6">
                     <label className="block font-semibold mb-2">Upload Image</label>
                     <input type="file" onChange={handleImageUpload} />
                     {uploading && <p className="text-sm text-gray-500 mt-2">Uploading image...</p>}
                     <div className="flex gap-4 mt-4">
                         {productData.images.map((image, index) => (
                             <div key={index} className="w-24 h-24 border border-gray-300 rounded-md overflow-hidden">
-                                <img src={image.url} alt={image.altText || image.alt || 'Product Image'} className="w-full h-full object-cover rounded-md shadow" />
+                                <img src={image.url} alt={image.altText || 'Product Image'} className="w-full h-full object-cover rounded-md shadow" />
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Submit Button */}
                 <button
                     type="submit"
+                    disabled={saving}
                     className="bg-green-500 text-white w-full py-2 rounded-md hover:bg-green-600 transition-colors">
-                    Update Product
+                    {saving ? "Creating..." : "Create Product"}
                 </button>
-
-
             </form>
         </div>
     );
 };
 
-export default EditProductPage;
+export default CreateProductPage;

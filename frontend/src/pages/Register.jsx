@@ -1,16 +1,50 @@
-import {useState} from "react"
-import { Link } from "react-router-dom"
+import {useEffect, useState, useRef} from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import register from "../assets/register.webp"
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../redux/slices/authSlice";
+import { mergeCart } from "../redux/slices/cartSlice";
 
 const Register = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const {user, guestId, loading, error} = useSelector((state) => state.auth);
+  const {cart } = useSelector((state) => state.cart);
+  const hasHandledRegister = useRef(false);
+
+  // Get redirect Parameter and check if its checkout or something
+  const redirect = new URLSearchParams(location.search).get("redirect") || "/";
+  const isCheckoutRedirect = redirect.includes("checkout");
+
+  useEffect(() => {
+    if (!user || hasHandledRegister.current) {
+      return;
+    }
+
+    hasHandledRegister.current = true;
+
+    const redirectAfterAuth = async () => {
+      if (cart?.products?.length > 0 && guestId) {
+        try {
+          await dispatch(mergeCart({ guestId, user })).unwrap();
+        } catch (mergeError) {
+          console.error("Cart merge failed:", mergeError);
+        }
+      }
+
+      navigate(isCheckoutRedirect ? "/checkout" : redirect || "/");
+    };
+
+    redirectAfterAuth();
+  }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch, redirect]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Handle registration logic here
-    console.log("Registering with:", { name, email, password })
+    dispatch(registerUser({name, email, password}))
   }
   return (
     <div className="flex">
@@ -53,16 +87,21 @@ const Register = () => {
                     placeholder="Enter your password"
                 />
             </div>
-            <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition">Register</button>
+            {error && (
+                <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+            )}
+            <button type="submit" disabled={loading} className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition">
+                {loading ? "Creating account..." : "Register"}
+            </button>
             <p className="mt-6 text-center text-sm">
                 Already have an account? {" "}
-                <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+                <Link to={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">Login</Link>
             </p>
         </form>
         </div>
 
         <div className="hidden md:block w-1/2 bg-gray-800">
-        <div className="h-full flex flex col justify-center items-center">
+        <div className="h-full flex flex-col justify-center items-center">
             <img src={register} alt="Login to Account" className="w-full h-[750px] object-cover"/>
         </div>
         
