@@ -1,4 +1,4 @@
-import rabbitHeroImg from '../../assets/rabbit-hero.webp'
+import rabbitHeroImg from '../../assets/home4.jpg'
 import { Link } from 'react-router-dom'
 const Hero = () => {
   return (

@@ -1,5 +1,5 @@
-import mensCollection from '../../assets/mens-collection.webp'
-import womensCollection from '../../assets/womens-collection.webp'
+import mensCollection from '../../assets/Man.jpg'
+import womensCollection from '../../assets/womencollection.jpg'
 import { Link } from 'react-router-dom'
 const GenderCollectionSection = () => {
   return (

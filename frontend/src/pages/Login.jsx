@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import login from "../assets/login.webp";
+import login from "../assets/Login2.jpg";
 import { loginUser } from "../redux/slices/authSlice";
 import { mergeCart } from "../redux/slices/cartSlice";
 

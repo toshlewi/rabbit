@@ -1,6 +1,6 @@
 import {useEffect, useState, useRef} from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import register from "../assets/register.webp"
+import register from "../assets/Registration.jpg"
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/slices/authSlice";
 import { mergeCart } from "../redux/slices/cartSlice";
