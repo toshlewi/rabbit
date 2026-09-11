@@ -11,6 +11,7 @@ import {
 } from "../../redux/slices/productsSlice";
 
 import { addToCart } from "../../redux/slices/cartSlice";
+import { optimizeImageUrl } from "../../utils/optimizeImageUrl";
 
 const ProductDetails = ({ productId }) => {
     const { id } = useParams();
@@ -205,7 +206,7 @@ const ProductDetails = ({ productId }) => {
                             return (
                                 <img
                                     key={index}
-                                    src={imageUrl}
+                                    src={optimizeImageUrl(imageUrl, 200)}
                                     alt={
                                         typeof image === "object"
                                             ? image?.altText ||
@@ -217,6 +218,8 @@ const ProductDetails = ({ productId }) => {
                                             ? "border-black"
                                             : "border-gray-300"
                                     }`}
+                                    loading="lazy"
+                                    decoding="async"
                                     onClick={() =>
                                         setSelectedImage(imageUrl)
                                     }
@@ -233,9 +236,11 @@ const ProductDetails = ({ productId }) => {
 
                             {mainImage ? (
                                 <img
-                                    src={mainImage}
+                                    src={optimizeImageUrl(mainImage, 900)}
                                     alt={selectedProduct.name}
                                     className="w-full h-auto max-h-[600px] object-cover rounded-lg"
+                                    fetchPriority="high"
+                                    decoding="async"
                                 />
                             ) : (
                                 <div className="w-full h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
@@ -259,7 +264,7 @@ const ProductDetails = ({ productId }) => {
                                 return (
                                     <img
                                         key={index}
-                                        src={imageUrl}
+                                        src={optimizeImageUrl(imageUrl, 200)}
                                         alt={
                                             typeof image === "object"
                                                 ? image?.altText ||
@@ -271,6 +276,8 @@ const ProductDetails = ({ productId }) => {
                                                 ? "border-black"
                                                 : "border-gray-300"
                                         }`}
+                                        loading="lazy"
+                                        decoding="async"
                                         onClick={() =>
                                             setSelectedImage(imageUrl)
                                         }

@@ -1,6 +1,7 @@
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import { optimizeImageUrl } from "../../utils/optimizeImageUrl";
 import {
     removeFromCart,
     updateCartItemQuantity,
@@ -76,9 +77,11 @@ const CartContents = () => {
                 >
                     <div className="flex items-start">
                         <img
-                            src={product.image}
+                            src={optimizeImageUrl(product.image, 200)}
                             alt={product.name}
                             className="w-20 h-24 object-cover mr-4 rounded"
+                            loading="lazy"
+                            decoding="async"
                         />
                     </div>
                     <div>

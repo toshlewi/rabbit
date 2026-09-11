@@ -2,6 +2,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
+import OptimizedImage from "../Common/OptimizedImage";
 
 const NewArrivals = () => {
     const scrollRef = useRef(null);
@@ -188,14 +189,15 @@ const NewArrivals = () => {
                     >
 
                         {/* Product Image */}
-                        <img
+                        <OptimizedImage
                             src={product.images?.[0]?.url}
                             alt={
                                 product.images?.[0]?.altText ||
                                 product.name
                             }
+                            width={700}
                             className="w-full h-[500px] object-cover rounded-lg"
-                            draggable="false"
+                            draggable={false}
                         />
 
                         {/* Product Information */}

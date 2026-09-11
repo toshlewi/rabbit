@@ -2,6 +2,7 @@ import {Link, useParams, useNavigate} from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrderDetails } from '../redux/slices/orderSlice';
+import { optimizeImageUrl } from '../utils/optimizeImageUrl';
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
@@ -84,7 +85,7 @@ const OrderDetailsPage = () => {
               {orderDetails.orderItems.map((item, index) => (
                 <tr key={`${item.productId}-${index}`} className="border-b">
                   <td className="py-2 px-4 flex items-center">
-                    <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg mr-4" />
+                    <img src={optimizeImageUrl(item.image, 120)} alt={item.name} className="w-12 h-12 object-cover rounded-lg mr-4" loading="lazy" decoding="async" />
                     <Link to={`/product/${item.productId}`} className="text-blue-500 hover:underline">{item.name}</Link>
                   </td>
                   <td className="py-2 px-4">Ksh {item.price}</td>

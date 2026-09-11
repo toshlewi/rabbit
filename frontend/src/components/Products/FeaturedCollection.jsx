@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import featured from '../../assets/featured.png'
+import featured from '../../assets/featured.webp'
 const FeaturedCollection = () => {
   return (
     <section className="py-16 px-4 lg:px-0">
@@ -15,8 +15,8 @@ const FeaturedCollection = () => {
             </div>
             {/*Right side - Image */}
             <div className="lg:w-1/2">
-                <img src={featured} alt="Featured Collection" 
-                className="w-full h-full object-cover lg:rounded-tr-3xl lg:rounded-br-3xl" />
+                <img src={featured} alt="Featured Collection"
+                className="w-full h-full object-cover lg:rounded-tr-3xl lg:rounded-br-3xl" loading="lazy" decoding="async" />
             </div>
         </div>
     </section>

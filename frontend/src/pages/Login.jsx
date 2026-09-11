@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import login from "../assets/Login2.jpg";
+import login from "../assets/Login2.webp";
 import { loginUser } from "../redux/slices/authSlice";
 import { mergeCart } from "../redux/slices/cartSlice";
 
@@ -98,7 +98,7 @@ const Login = () => {
 
         <div className="hidden md:block w-1/2 bg-gray-800">
         <div className="h-full flex flex-col justify-center items-center">
-            <img src={login} alt="Login to Account" className="w-full h-[750px] object-cover"/>
+            <img src={login} alt="Login to Account" className="w-full h-[750px] object-cover" decoding="async"/>
         </div>
         
         </div>

@@ -1,5 +1,5 @@
-import mensCollection from '../../assets/Man.jpg'
-import womensCollection from '../../assets/womencollection.jpg'
+import mensCollection from '../../assets/Man.webp'
+import womensCollection from '../../assets/womencollection.webp'
 import { Link } from 'react-router-dom'
 const GenderCollectionSection = () => {
   return (
@@ -7,7 +7,7 @@ const GenderCollectionSection = () => {
       <div className=" container mx-auto flex flex-col md:flex-row gap-8">
         {/* Women's Collection */}
         <div className="relative flex-1">
-          <img src={womensCollection} alt="Women's Collection" className=" w-full h-[700px] object-cover" />
+          <img src={womensCollection} alt="Women's Collection" className=" w-full h-[700px] object-cover" loading="lazy" decoding="async" />
           <div className="absolute bottom-8 left-8 bg-white bg-opacity-90 p-4 rounded-lg">
             <h2 className="text-2xl font-bold text-gray-900">Women's Collection</h2>
             <Link to="/collections/all?gender=Women" className="text-gray-900 underline">
@@ -18,7 +18,7 @@ const GenderCollectionSection = () => {
 
         {/* Men's Collection */}
         <div className="flex-1 relative">
-          <img src={mensCollection} alt="Men's Collection" className="w-full h-[700px] object-cover" />
+          <img src={mensCollection} alt="Men's Collection" className="w-full h-[700px] object-cover" loading="lazy" decoding="async" />
           <div className="absolute bottom-8 left-8 bg-white bg-opacity-90 p-4 rounded-lg">
             <h2 className="text-2xl font-bold text-gray-900">Men's Collection</h2>
             <Link to="/collections/all?gender=Men" className="text-gray-900 underline">

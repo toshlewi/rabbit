@@ -6,6 +6,7 @@ import axios from "axios";
 import PayPalButton from "./PayPalButton";
 import { createCheckout } from "../../redux/slices/checkoutSlice";
 import { toast } from "sonner";
+import { optimizeImageUrl } from "../../utils/optimizeImageUrl";
 
 const Checkout = () => {
     const navigate = useNavigate();
@@ -543,9 +544,11 @@ const Checkout = () => {
                                 <div className="flex items-center gap-4">
 
                                     <img
-                                        src={product.image}
+                                        src={optimizeImageUrl(product.image, 200)}
                                         alt={product.name}
                                         className="w-20 h-24 object-cover rounded"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
 
                                     <div>

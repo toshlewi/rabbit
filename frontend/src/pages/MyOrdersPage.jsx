@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchUserOrders } from "../redux/slices/orderSlice";
+import { optimizeImageUrl } from "../utils/optimizeImageUrl";
 
 const MyOrdersPage = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const MyOrdersPage = () => {
                 onClick={() => handleRowClick(order._id)}
                 >
                   <td className="py-2 px-2">
-                    <img src={order.orderItems?.[0]?.image} alt={order.orderItems?.[0]?.name} className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-lg" />
+                    <img src={optimizeImageUrl(order.orderItems?.[0]?.image, 120)} alt={order.orderItems?.[0]?.name} className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-lg" loading="lazy" decoding="async" />
                   </td>
                   <td className="py-2 px-2 sm:py-2 sm:px-4 font-medium text-gray-900 whitespace-nowrap">{order._id}</td>
                   <td className="py-2 px-2 sm:py-2">

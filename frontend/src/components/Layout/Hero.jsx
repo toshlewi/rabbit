@@ -1,9 +1,15 @@
-import rabbitHeroImg from '../../assets/home4.jpg'
+import rabbitHeroImg from '../../assets/home4.webp'
 import { Link } from 'react-router-dom'
 const Hero = () => {
   return (
     <section className="relative">
-      <img src={rabbitHeroImg} alt="Hero"  className="w-full h-[400px] md:h-[600px] lg:h-[700px] object-cover" />
+      <img
+        src={rabbitHeroImg}
+        alt="Hero"
+        className="w-full h-[400px] md:h-[600px] lg:h-[700px] object-cover"
+        fetchPriority="high"
+        decoding="async"
+      />
       <div className="absolute inset-0 bg-black bg-opacity-5 flex items-center justify-center">
         <div className="text-center text-white p-6">
             <h1 className="text-4xl md:text-9xl font-bold tracking-tighter uppercase mb-4 ">
